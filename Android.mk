@@ -1,0 +1,9 @@
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := fstab.msm8953_64
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES := recovery.fstab
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc
+include $(BUILD_PREBUILT)
