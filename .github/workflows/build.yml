@@ -28,12 +28,27 @@ jobs:
         cd twrp_manifest
         repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-9.0
         repo sync -j2 --force-sync --no-clone-bundle
+        # 显示根目录和 device 目录情况
+        echo "=== Contents of twrp_manifest ==="
+        ls -la
+        echo "=== Contents of twrp_manifest/device (if exists) ==="
+        if [ -d device ]; then ls -la device; else echo "device directory not found"; fi
+        echo "=== Contents of twrp_manifest/device/sprocomm (if exists) ==="
+        if [ -d device/sprocomm ]; then ls -la device/sprocomm; else echo "device/sprocomm not found"; fi
 
     - name: Link device tree
       run: |
-        cd twrp_manifest/device
+        cd twrp_manifest
+        # 如果 device 目录不存在，尝试手动创建
+        if [ ! -d "device" ]; then
+          echo "device directory missing, creating manually"
+          mkdir -p device
+        fi
+        cd device
         mkdir -p sprocomm
         ln -s $GITHUB_WORKSPACE sprocomm/msm8953_64
+        echo "Linked device tree at:"
+        ls -la sprocomm/
 
     - name: Build recovery image
       run: |
